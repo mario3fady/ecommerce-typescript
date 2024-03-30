@@ -2,6 +2,7 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { signUpSchema, signUpType } from "@validations/signUpSchema";
 import { Heading } from "@components/common";
+import { Input } from "@components/Form";
 import { Form, Button, Row, Col } from "react-bootstrap";
 
 const Register = () => {
@@ -24,64 +25,36 @@ const Register = () => {
       <Row>
         <Col md={{ span: 6, offset: 3 }}>
           <Form onSubmit={handleSubmit(submitForm)}>
-            <Form.Group className="mb-3">
-              <Form.Label>First Name </Form.Label>
-              <Form.Control
-                type="text"
-                {...register("firstName")}
-                isInvalid={errors.firstName?.message ? true : false}
-              />
-              <Form.Control.Feedback type="invalid">
-                {errors.firstName?.message}
-              </Form.Control.Feedback>
-            </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Label>Last Name </Form.Label>
-              <Form.Control
-                type="text"
-                {...register("lastName")}
-                isInvalid={errors.lastName?.message ? true : false}
-              />
-              <Form.Control.Feedback type="invalid">
-                {errors.lastName?.message}
-              </Form.Control.Feedback>
-            </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Label>Email address</Form.Label>
-              <Form.Control
-                type="text"
-                {...register("email")}
-                isInvalid={errors.email?.message ? true : false}
-              />
-              <Form.Control.Feedback type="invalid">
-                {errors.email?.message}
-              </Form.Control.Feedback>
-            </Form.Group>
-
-            <Form.Group className="mb-3">
-              <Form.Label>Password</Form.Label>
-              <Form.Control
-                type="password"
-                {...register("password")}
-                isInvalid={errors.password?.message ? true : false}
-              />
-              <Form.Control.Feedback type="invalid">
-                {errors.password?.message}
-              </Form.Control.Feedback>
-            </Form.Group>
-
-            <Form.Group className="mb-3">
-              <Form.Label>Confirm Password</Form.Label>
-              <Form.Control
-                type="password"
-                {...register("confirmPassword")}
-                isInvalid={errors.confirmPassword?.message ? true : false}
-              />
-              <Form.Control.Feedback type="invalid">
-                {errors.confirmPassword?.message}
-              </Form.Control.Feedback>
-            </Form.Group>
-
+            <Input
+              label="First Name"
+              name="firstName"
+              register={register}
+              error={errors.firstName?.message}
+            />
+            <Input
+              label="Last Name"
+              name="lastName"
+              register={register}
+              error={errors.lastName?.message}
+            />
+            <Input
+              label="Email Address"
+              name="email"
+              register={register}
+              error={errors.email?.message}
+            />
+            <Input
+              label="Password"
+              name="password"
+              register={register}
+              error={errors.password?.message}
+            />
+            <Input
+              label="Confirm Password"
+              name="confirmPassword"
+              register={register}
+              error={errors.confirmPassword?.message}
+            />
             <Button variant="info" type="submit" style={{ color: "white" }}>
               Submit
             </Button>
