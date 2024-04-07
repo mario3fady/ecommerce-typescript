@@ -31,6 +31,7 @@ const Login = () => {
               error={errors.email?.message}
             />
             <Input
+              type="password"
               name="password"
               label="Password"
               register={register}
