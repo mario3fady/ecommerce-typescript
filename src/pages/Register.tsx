@@ -1,12 +1,22 @@
+import { useEffect } from "react";
+import { useAppDispatch, useAppSelector } from "@store/hooks";
+import { actAuthRegister, resetUI } from "@store/auth/authSlice";
+import { useNavigate, Navigate } from "react-router-dom";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { signUpSchema, signUpType } from "@validations/signUpSchema";
 import useCheckEmailAvailability from "@hooks/useCheckEmailAvailability";
 import { Heading } from "@components/common";
 import { Input } from "@components/Form";
-import { Form, Button, Row, Col } from "react-bootstrap";
+import { Form, Button, Row, Col, Spinner } from "react-bootstrap";
 
 const Register = () => {
+  const dispatch = useAppDispatch();
+
+  const navigate = useNavigate();
+
+  const { loading, error, accessToken } = useAppSelector((state) => state.auth);
+
   const {
     register,
     handleSubmit,
@@ -18,8 +28,13 @@ const Register = () => {
     resolver: zodResolver(signUpSchema),
   });
 
-  const submitForm: SubmitHandler<signUpType> = (data) => {
-    console.log(data);
+  const submitForm: SubmitHandler<signUpType> = async (data) => {
+    const { firstName, lastName, email, password } = data;
+    dispatch(actAuthRegister({ firstName, lastName, email, password }))
+      .unwrap()
+      .then(() => {
+        navigate("/login?message=account_created");
+      });
   };
 
   const {
@@ -43,6 +58,16 @@ const Register = () => {
       resetCheckEmailAvailability();
     }
   };
+
+  useEffect(() => {
+    return () => {
+      dispatch(resetUI());
+    };
+  }, [dispatch]);
+
+  if (accessToken) {
+    return <Navigate to="/" />;
+  }
 
   return (
     <>
@@ -106,10 +131,23 @@ const Register = () => {
               variant="info"
               type="submit"
               style={{ color: "white" }}
-              disabled={emailAvailabilityStatus === "checking" ? true : false}
+              disabled={
+                emailAvailabilityStatus === "checking"
+                  ? true
+                  : false || loading === "pending"
+              }
             >
-              Submit
+              {loading === "pending" ? (
+                <>
+                  <Spinner animation="border" size="sm"></Spinner> Loading...
+                </>
+              ) : (
+                "Submit"
+              )}
             </Button>
+            {error && (
+              <p style={{ color: "#DC3545", marginTop: "10px" }}>{error}</p>
+            )}
           </Form>
         </Col>
       </Row>
