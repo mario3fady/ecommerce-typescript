@@ -50,7 +50,11 @@ const wishlistSlice = createSlice({
     });
     builder.addCase(actGetWishlist.fulfilled, (state, action) => {
       state.loading = "succeeded";
-      state.productsFullInfo = action.payload;
+      if (action.payload.dataType === "ProductsFullInfo") {
+        state.productsFullInfo = action.payload.data as TProduct[];
+      } else {
+        state.itemsId = action.payload.data as number[];
+      }
     });
     builder.addCase(actGetWishlist.rejected, (state, action) => {
       state.loading = "failed";
