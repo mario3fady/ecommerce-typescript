@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import actLikeToggle from "./act/actLikeToggle";
 import actGetWishlist from "./act/actGetWishlist";
+import { authLogout } from "@store/auth/authSlice";
 import { TProduct, TLoading, isString } from "@types";
 interface IWishlist {
   itemsId: number[];
@@ -61,6 +62,12 @@ const wishlistSlice = createSlice({
       if (isString(action.payload)) {
         state.error = action.payload;
       }
+    });
+
+    // when logout reset
+    builder.addCase(authLogout, (state) => {
+      state.itemsId = [];
+      state.productsFullInfo = [];
     });
   },
 });

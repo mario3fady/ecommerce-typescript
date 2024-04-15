@@ -15,8 +15,10 @@ const Header = () => {
   const { accessToken, user } = useAppSelector((state) => state.auth);
 
   useEffect(() => {
-    dispatch(actGetWishlist("ProductIds"));
-  }, [dispatch]);
+    if (accessToken) {
+      dispatch(actGetWishlist("ProductIds"));
+    }
+  }, [dispatch, accessToken]);
 
   return (
     <header>
