@@ -7,6 +7,7 @@ import {
 
 const useCategories = () => {
   const dispatch = useAppDispatch();
+
   const { loading, error, records } = useAppSelector(
     (state) => state.categories
   );
