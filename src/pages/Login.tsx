@@ -1,48 +1,20 @@
-import { useEffect } from "react";
-import { useAppDispatch, useAppSelector } from "@store/hooks";
-import { actAuthLogin, resetUI } from "@store/auth/authSlice";
-import { useSearchParams, useNavigate, Navigate } from "react-router-dom";
-import { useForm, SubmitHandler } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { signInSchema, signInType } from "@validations/signInSchema";
+import { Navigate } from "react-router-dom";
+import useLogin from "@hooks/useLogin";
 import { Heading } from "@components/common";
 import { Input } from "@components/Form";
 import { Form, Button, Row, Col, Alert, Spinner } from "react-bootstrap";
 
 const Login = () => {
-  const dispatch = useAppDispatch();
-
-  const navigate = useNavigate();
-
-  const [searchParams, setSearchParams] = useSearchParams();
-
-  const { error, loading, accessToken } = useAppSelector((state) => state.auth);
-
   const {
+    error,
+    loading,
+    accessToken,
+    formErrors,
+    searchParams,
     register,
     handleSubmit,
-    formState: { errors },
-  } = useForm<signInType>({
-    mode: "onBlur",
-    resolver: zodResolver(signInSchema),
-  });
-
-  const submitForm: SubmitHandler<signInType> = async (data) => {
-    if (searchParams.get("message")) {
-      setSearchParams("");
-    }
-    dispatch(actAuthLogin(data))
-      .unwrap()
-      .then(() => {
-        navigate("/");
-      });
-  };
-
-  useEffect(() => {
-    return () => {
-      dispatch(resetUI());
-    };
-  }, [dispatch]);
+    submitForm,
+  } = useLogin();
 
   if (accessToken) {
     return <Navigate to="/" />;
@@ -69,14 +41,14 @@ const Login = () => {
               name="email"
               label="Email Address"
               register={register}
-              error={errors.email?.message}
+              error={formErrors.email?.message}
             />
             <Input
               type="password"
               name="password"
               label="Password"
               register={register}
-              error={errors.password?.message}
+              error={formErrors.password?.message}
             />
             <Button variant="info" type="submit" style={{ color: "white" }}>
               {loading === "pending" ? (
