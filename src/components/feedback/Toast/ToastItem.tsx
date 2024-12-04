@@ -12,7 +12,7 @@ const ToastItem = ({
   type,
   delayAnimation,
   title,
-  info,
+  message,
   onCloseToast,
 }: TToast) => {
   const dispatch = useAppDispatch();
@@ -85,7 +85,7 @@ const ToastItem = ({
       onMouseLeave={handleMouseEvent}
     >
       <h5>{title ? title : type}</h5>
-      <p>{info}</p>
+      <p>{message}</p>
       <button type="button" className="btn-close" onClick={closeToastHandler} />
       <span
         className="placeholder"

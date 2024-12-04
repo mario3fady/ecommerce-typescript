@@ -60,8 +60,9 @@ const store = configureStore({
           PERSIST,
           PURGE,
           REGISTER,
-          "toast/addToast",
+          "toasts/addToast",
         ],
+        ignoredPaths: ["toasts.records.0.onCloseToast"],
       },
     }),
 });

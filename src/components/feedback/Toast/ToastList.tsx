@@ -17,13 +17,12 @@ const ToastList = () => {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ ease: "easeInOut" }}
-            whileHover={{ scale: 1.05 }}
           >
             <ToastItem
               id={record.id}
               title={record.title}
               type={record.type}
-              info={record.info}
+              message={record.message}
               delayAnimation={record.delayAnimation}
               onCloseToast={record.onCloseToast}
             />

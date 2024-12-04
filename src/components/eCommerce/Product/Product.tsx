@@ -53,8 +53,8 @@ const Product = memo(
         addToast({
           title: "Add to Cart",
           type: "success",
-          info: `${title} added to wishlist`,
-          onClose: () => {
+          message: `${title} added to wishlist`,
+          onCloseToast: () => {
             console.log("fired");
           },
         })
@@ -65,7 +65,7 @@ const Product = memo(
         dispatch(
           addToast({
             type: "warning",
-            info: `you reached to max from ${title}`,
+            message: `you reached to max from ${title}`,
             delayAnimation: true,
           })
         );
@@ -85,7 +85,7 @@ const Product = memo(
                 dispatch(
                   addToast({
                     type: "success",
-                    info: `${title} added to wishlist`,
+                    message: `${title} added to wishlist`,
                   })
                 );
             })
@@ -95,7 +95,7 @@ const Product = memo(
                 addToast({
                   title: "Failed Operation",
                   type: "danger",
-                  info: `Failed to add wishlist, error from server`,
+                  message: `Failed to add wishlist, error from server`,
                 })
               );
             });

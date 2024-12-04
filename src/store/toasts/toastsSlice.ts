@@ -10,7 +10,7 @@ const initialState: IToastState = {
 };
 
 const toastSlice = createSlice({
-  name: "toast",
+  name: "toasts",
   initialState,
   reducers: {
     removeToast: (state, action) => {
@@ -21,7 +21,7 @@ const toastSlice = createSlice({
         id: nanoid(),
         title: action.payload.title || action.payload.type,
         type: action.payload.type,
-        info: action.payload.info,
+        message: action.payload.message,
         delayAnimation: action.payload.delayAnimation || false,
         onCloseToast: action.payload.onCloseToast,
       });
