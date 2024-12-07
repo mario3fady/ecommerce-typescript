@@ -2,6 +2,7 @@ import { useEffect, useState, memo } from "react";
 import { useAppDispatch } from "@store/hooks";
 import { actLikeToggle } from "@store/wishlist/wishlistSlice";
 import { addToCart } from "@store/cart/cartSlice";
+import { addToast } from "@store/toasts/toastsSlice";
 import Like from "@assets/svg/like.svg?react";
 import LikeFill from "@assets/svg/like-fill.svg?react";
 import ProductInfo from "../ProductInfo/ProductInfo";
@@ -9,7 +10,7 @@ import { Button, Spinner, Modal } from "react-bootstrap";
 import { TProduct } from "@types";
 
 import styles from "./styles.module.css";
-const { productImg, maximumNotice, wishlistBtn } = styles;
+const { maximumNotice, wishlistBtn } = styles;
 
 const Product = memo(
   ({
@@ -47,6 +48,24 @@ const Product = memo(
 
     const addToCartHandler = () => {
       dispatch(addToCart(id));
+      dispatch(
+        addToast({
+          title: "Add to Cart",
+          type: "success",
+          message: `item ${title} added to cart`,
+          onCloseToast: () => console.log("fired"),
+        })
+      );
+
+      currentRemainingQuantity - 1 == 0 &&
+        dispatch(
+          addToast({
+            type: "warning",
+            message: `you reached to max from item: ${title}`,
+            delayAppearance: true,
+          })
+        );
+
       setIsBtnDisabled(true);
     };
 
@@ -56,8 +75,26 @@ const Product = memo(
           setIsLoading(true);
           dispatch(actLikeToggle(id))
             .unwrap()
-            .then(() => setIsLoading(false))
-            .catch(() => setIsLoading(false));
+            .then(() => {
+              setIsLoading(false);
+              !isLiked &&
+                dispatch(
+                  addToast({
+                    type: "success",
+                    message: `item ${title} added to your wish list`,
+                  })
+                );
+            })
+            .catch(() => {
+              setIsLoading(false);
+              dispatch(
+                addToast({
+                  title: "unable to add item",
+                  type: "danger",
+                  message: `there is error to add item to wish list`,
+                })
+              );
+            });
         }
       } else {
         setShowModal(true);
