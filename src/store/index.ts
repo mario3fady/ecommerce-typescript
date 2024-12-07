@@ -62,7 +62,7 @@ const store = configureStore({
           REGISTER,
           "toasts/addToast",
         ],
-        ignoredPaths: ["toasts.records.0.onCloseToast"],
+        ignoredPaths: [/^toasts\.records\.\d+\.onCloseToast$/],
       },
     }),
 });
